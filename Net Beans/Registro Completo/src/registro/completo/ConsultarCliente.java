@@ -181,6 +181,7 @@ public class ConsultarCliente extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setLocation(new java.awt.Point(400, 200));
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
 
@@ -189,6 +190,7 @@ public class ConsultarCliente extends javax.swing.JFrame {
         jLabel1.setText("LISTA USUARIOS");
 
         listar_usuario.setBackground(new java.awt.Color(153, 204, 255));
+        listar_usuario.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout listar_usuarioLayout = new javax.swing.GroupLayout(listar_usuario);
         listar_usuario.setLayout(listar_usuarioLayout);
@@ -217,9 +219,8 @@ public class ConsultarCliente extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(165, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,6 +228,7 @@ public class ConsultarCliente extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(160, 160, 160))))
+            .addComponent(jScrollPane4)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

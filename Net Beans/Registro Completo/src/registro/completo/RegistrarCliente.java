@@ -209,7 +209,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
         String email = campo_email.getText();
         
         if (!documento.equals("") && !nombre.equals("") && !apellido.equals("") && !telefono.equals("") && !direccion.equals("") && !email.equals("")){
-            Cliente temp = new Cliente(documento, nombre, apellido, telefono, direccion, email);
+            Personas temp = new Personas(documento, nombre, apellido, telefono, direccion, email);
             this.ventanaMenu.listaClientes[this.ventanaMenu.contClientes] = temp;
             this.ventanaMenu.contClientes++;
             dispose();

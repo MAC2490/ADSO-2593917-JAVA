@@ -1,6 +1,6 @@
 package registro.completo;
 
-public class Cliente {
+public class Personas {
     private String documento;
     private String nombre;
     private String apellido;
@@ -8,7 +8,7 @@ public class Cliente {
     private String direccion;
     private String email;
 
-    public Cliente(String documento, String nombre, String apellido, String telefono, String direccion, String email) {
+    public Personas(String documento, String nombre, String apellido, String telefono, String direccion, String email) {
         this.documento = documento;
         this.nombre = nombre;
         this.apellido = apellido;

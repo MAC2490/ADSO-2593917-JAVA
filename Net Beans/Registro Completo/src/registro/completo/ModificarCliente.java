@@ -62,6 +62,8 @@ public class ModificarCliente extends javax.swing.JFrame {
             }
         });
 
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Nombre:");
@@ -178,7 +180,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(buscar_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscar_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,18 +219,18 @@ public class ModificarCliente extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(155, 155, 155)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(179, 179, 179))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -261,19 +263,14 @@ public class ModificarCliente extends javax.swing.JFrame {
         String email =  this.modificar_email.getText();
         
         for(int i=0; i<this.ventanaMenu.contClientes; i++){
-            if(this.ventanaMenu.listaClientes[i].getDocumento().equals(documento) && !this.ventanaMenu.listaClientes[i].equals(null)){
-                this.ventanaMenu.listaClientes[i].setNombre(nombre);
-                this.ventanaMenu.listaClientes[i].setApellido(apellido);
-                this.ventanaMenu.listaClientes[i].setTelefono(telefono);
-                this.ventanaMenu.listaClientes[i].setDireccion(direccion);
-                this.ventanaMenu.listaClientes[i].setEmail(email);
-                Cliente temp = new Cliente (documento,nombre, apellido, telefono, direccion, email);
+            if(this.ventanaMenu.listaClientes[i].getDocumento().equals(documento)){
+                Personas temp = new Personas (documento,nombre, apellido, telefono, direccion, email);
                 this.ventanaMenu.listaClientes[i] = temp;
+                this.ventanaMenu.setVisible(true);
+                dispose();
                 this.ventanaMenu.setVisible(true);
             }
         }
-        dispose();
-        this.ventanaMenu.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void modificar_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificar_emailActionPerformed
@@ -295,7 +292,7 @@ public class ModificarCliente extends javax.swing.JFrame {
     
     public void encontrarDocumento(String documento){
         for (int i = 0; i < this.ventanaMenu.contClientes; i++) {
-            if (this.ventanaMenu.listaClientes[i].getDocumento().equals(documento) && !this.ventanaMenu.listaClientes[i].getDocumento().equals(null)){
+            if (this.ventanaMenu.listaClientes[i].getDocumento().equals(documento)){
                 this.modificar_nombre.setText(this.ventanaMenu.listaClientes[i].getNombre());
                 this.modificar_apellido.setText(this.ventanaMenu.listaClientes[i].getApellido());
                 this.modificar_telefono.setText(this.ventanaMenu.listaClientes[i].getTelefono());

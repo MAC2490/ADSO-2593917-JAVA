@@ -51,7 +51,10 @@ public class EliminarCliente extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Documento:");
 
+        eliminar_nombre.setEditable(false);
         eliminar_nombre.setBackground(new java.awt.Color(204, 255, 255));
+
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -64,24 +67,28 @@ public class EliminarCliente extends javax.swing.JFrame {
             }
         });
 
+        eliminar_apellido.setEditable(false);
         eliminar_apellido.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Apellido:");
 
+        eliminar_direccion.setEditable(false);
         eliminar_direccion.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Telefono:");
 
+        eliminar_telefono.setEditable(false);
         eliminar_telefono.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Direccion:");
 
+        eliminar_email.setEditable(false);
         eliminar_email.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -244,18 +251,14 @@ public class EliminarCliente extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String cedula = buscar_documento.getText();
-        String nombre = eliminar_nombre.getText();
-        String apellido = eliminar_apellido.getText();
-        String telefono = eliminar_telefono.getText();
-        String direccion = eliminar_direccion.getText();
-        String email = eliminar_email.getText();
         
         for(int i=0; i<this.ventanaMenu.contClientes; i++){
-            if(this.ventanaMenu.listaClientes[i].getDocumento().equals(cedula) && !this.ventanaMenu.listaClientes[i].equals(null)){
-                for(int j=i; j<this.ventanaMenu.contClientes-j; j++){
+            if(this.ventanaMenu.listaClientes[i].getDocumento().equals(cedula)){
+                for(int j=i; j<this.ventanaMenu.contClientes-1; j++){
                     this.ventanaMenu.listaClientes[j] = this.ventanaMenu.listaClientes[j+1];
-                    this.ventanaMenu.contClientes--;
                 }
+                this.ventanaMenu.contClientes--;
+                break;
             }
         }
         
@@ -270,7 +273,7 @@ public class EliminarCliente extends javax.swing.JFrame {
     
     public void encontrarDocumento(String documento){
         for (int i = 0; i < this.ventanaMenu.contClientes; i++) {
-            if (this.ventanaMenu.listaClientes[i].getDocumento().equals(documento) && !this.ventanaMenu.listaClientes[i].getDocumento().equals(null)){
+            if (this.ventanaMenu.listaClientes[i].getDocumento().equals(documento)){
                 this.eliminar_nombre.setText(this.ventanaMenu.listaClientes[i].getNombre());
                 this.eliminar_apellido.setText(this.ventanaMenu.listaClientes[i].getApellido());
                 this.eliminar_telefono.setText(this.ventanaMenu.listaClientes[i].getTelefono());
