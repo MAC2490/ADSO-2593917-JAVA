@@ -7,7 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.time.LocalDate;
 import Principal.Menu;
+import Principal.Alert;
 
 public class CrearFactura extends JFrame{
     
@@ -18,7 +20,18 @@ public class CrearFactura extends JFrame{
         this.listaClientes = this.ventanaMenu.database.listaClientes();
         this.listaVendedores = this.ventanaMenu.database.listaVendedores();
         this.listaProductos = this.ventanaMenu.database.listaProducto();
-
+        
+        this.guardarCliente = "";
+        this.guardarProducto = "";
+        this.guardarProducto = "";
+        this.documentoCliente = "";
+        this.documentoVendedor = "";
+        this.i = 1;
+        this.j = 0;
+        this.guardarPrecio = 0;
+        this.precioTotal = 0;
+        this.id = 0;
+        this.id_items = 0;
         initComponent();
     }
 
@@ -32,11 +45,9 @@ public class CrearFactura extends JFrame{
         setLocationRelativeTo(null);
         
         setIconImage( getToolkit().createImage( ClassLoader.getSystemResource("imagenes/icono_almacenes.png") ) );
-
-        JPanel contPrincipal = new JPanel();
+        
         contPrincipal.setLayout(new GridBagLayout());
         contPrincipal.setBorder( BorderFactory.createEmptyBorder(20, 20, 20, 10) );
-        GridBagConstraints restriccion = new GridBagConstraints();
 
         etq_datos_cliente = new JLabel("DATOS CLIENTE:");
         etq_datos_cliente.setFont( new Font("Arial", Font.BOLD, 20) );
@@ -287,7 +298,7 @@ public class CrearFactura extends JFrame{
         restriccion.insets = new Insets(0, 0, 0, 0);
         restriccion.fill = GridBagConstraints.BOTH;
         contPrincipal.add( input_nombre_producto, restriccion );
-
+        
         input_cant_producto = new JTextField();
         input_cant_producto.setHorizontalAlignment(JLabel.CENTER);
         restriccion.gridy = 9;
@@ -311,13 +322,10 @@ public class CrearFactura extends JFrame{
         restriccion.fill = GridBagConstraints.BOTH;
         contPrincipal.add( btn_add_producto, restriccion );
 
-        etq_resultado = new JLabel(" ---- ");
-        etq_resultado.setHorizontalAlignment( JLabel.RIGHT );
-        etq_resultado.setVerticalAlignment( JLabel.TOP );
-        etq_resultado.setFont( new Font("Arial", Font.BOLD, 10) );
-        etq_resultado.setOpaque(true);
-        etq_resultado.setBackground( Color.white );
-        etq_resultado.setBorder( BorderFactory.createEmptyBorder(10, 10, 10, 10) );
+        etq_resultado = new JPanel();
+        scroll = new JScrollPane(etq_resultado);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        etq_resultado.setLayout(new GridBagLayout());
         restriccion.gridy = 10;
         restriccion.gridx = 0;
         restriccion.gridheight = 1;
@@ -326,7 +334,7 @@ public class CrearFactura extends JFrame{
         restriccion.weightx = 100;
         restriccion.fill = GridBagConstraints.BOTH;
         restriccion.insets = new Insets(10, 0, 0, 10);
-        contPrincipal.add( etq_resultado, restriccion );
+        contPrincipal.add( scroll, restriccion );
 
         etq_total = new JLabel("Total: $ 0");
         etq_total.setHorizontalAlignment( JLabel.RIGHT );
@@ -401,10 +409,10 @@ public class CrearFactura extends JFrame{
                 if (e.getKeyCode()==10) {
                     buscarCliente();
                 }else{
-                        input_nombres_cliente.setText("");
+                    input_nombres_cliente.setText("");
                     input_direccion_cliente.setText("");
                     deshabilitarInput(input_nombres_cliente);
-                                        deshabilitarInput(input_direccion_cliente);
+                    deshabilitarInput(input_direccion_cliente);
                 }
             }
 
@@ -414,7 +422,7 @@ public class CrearFactura extends JFrame{
 
         ActionListener eventoClickBuscarVendedor = new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                    buscarVendedor();
+                buscarVendedor();
             }
         };
 
@@ -430,7 +438,7 @@ public class CrearFactura extends JFrame{
                 if (e.getKeyCode()==10) {
                     buscarVendedor();
                 }else{
-                        input_nombres_vendedor.setText("");
+                    input_nombres_vendedor.setText("");
                     deshabilitarInput(input_nombres_vendedor);
 
                     input_id_producto.setText("");
@@ -482,20 +490,15 @@ public class CrearFactura extends JFrame{
         };
         input_id_producto.addKeyListener(eventoKeyBuscarProducto);
         
-        KeyListener eventoKeyAgregarProducto = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
+        ActionListener eventoClickAgregarProducto = new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                System.out.println("02");
                 agregarProducto();
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
+                total();
+                registrarItemsFactura();
             }
         };
+        btn_add_producto.addActionListener(eventoClickAgregarProducto);
         
         ActionListener eventoAtras = new ActionListener() {
             @Override
@@ -506,22 +509,88 @@ public class CrearFactura extends JFrame{
         };
         btn_atras.addActionListener(eventoAtras);
         
-        
+        ActionListener eventoRegistrar = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Registrar();
+            }
+        };
+        btn_registrar.addActionListener(eventoRegistrar);
+    }
+    
+    public void Registrar(){
+        this.id++; 
+        LocalDate fechaActual = LocalDate.now();
+        String fecha = fechaActual.toString();
+        if (!this.documentoCliente.equals(" ") && !this.documentoVendedor.equals("") && !fecha.equals("") && this.precioTotal != 0 && this.id_items >=0) {
+            boolean proceso = this.ventanaMenu.database.registrarFactura(this.id, this.documentoCliente, this.documentoVendedor, fecha, this.precioTotal);
+            Alert alerta = new Alert("EXITO", "Los datos se guardaron correctamento", "success");
+            System.out.println(this.documentoCliente+"  "+this.documentoVendedor+"  "+fecha+"  "+this.precioTotal);
+        }else{
+            Alert alerta = new Alert("902", "Los datos no se pudieron registrar.", "error");
+        }
+    }
+    
+    public void registrarItemsFactura(){
+        this.id_items++;
+        String id_producto = input_id_producto.getText();
+        String cantidad_pro = input_cant_producto.getText();
+        int idProducto = Integer.valueOf(id_producto);
+        int cantidad = Integer.valueOf(cantidad_pro);
+        if (cantidad != 0 && this.precioTotal != 0) {
+            boolean proceso = this.ventanaMenu.database.registrarItemsFactura(this.id_items,this.id,idProducto,cantidad,this.precioTotal);
+        }
     }
     
     public void agregarProducto(){
-        // Terminar codigo para agregar los productos a la lista de los produtos 
+        String cant = input_cant_producto.getText();
+        String id = input_id_producto.getText();
+        int validarCant = Integer.valueOf(cant);
+        i++;
+        if (this.guardarCliente != "" && this.guardarProducto != "" && guardarVendedor != "" && !cant.equals("") && validarCant != 0) {
+            if (j==0) {
+                JLabel entrada = new JLabel ("          Cliente: "+this.guardarCliente+"                  Vendedor: "+this.guardarVendedor);
+                Font font = new Font("Arial", Font.BOLD, 15);
+                entrada.setFont(font);
+                restriccion.gridy = 0;
+                restriccion.gridx = 0;
+                this.etq_resultado.add(entrada,restriccion);
+                System.out.println("01");
+            }
+            JLabel imprimir = new JLabel ("<html><br>Id: "+id+"<br>Producto: "+this.guardarProducto+"<br>Cantidad: "+cant);
+            Font font = new Font("Arial", Font.BOLD, 15);    
+            imprimir.setFont(font);
+            restriccion.gridy = i;
+            restriccion.gridx = 0;
+            this.etq_resultado.add(imprimir,restriccion);
+            System.out.println("01");
+        }else{
+            Alert alerta = new Alert("202", "Los datos no estan completos.", "error");
+        }
+        this.scroll.revalidate();
+        j=1;
     }
-
+    
+    public void total(){
+        String extraerCantidad = input_cant_producto.getText();
+        int cantidad = Integer.valueOf(extraerCantidad);
+        int total = cantidad*this.guardarPrecio;
+        this.precioTotal = precioTotal + total; 
+        String mostrarTotal = String.valueOf(precioTotal);
+        
+        String formatoMoneda = this.formatoMoneda(mostrarTotal);
+        this.etq_total.setText(formatoMoneda);
+    }
+    
     public boolean validarNumero(String texto){
         int contador = 0;
         for (int i=0; i<texto.length(); i++) {
                 int codigo = (int) texto.charAt(i);
                 if ((codigo<48 || codigo>57) && codigo!=44 && codigo!=45 && codigo!=46){
-                        return false;
+                    return false;
                 }
                 if (codigo==44 || codigo==46){
-                        contador++;
+                    contador++;
                 }
         }
         return (contador<=1);
@@ -537,24 +606,22 @@ public class CrearFactura extends JFrame{
         String texto = input_cedula_cliente.getText();
         boolean encontrado = false;
         for (int i=0; i<this.listaClientes.length; i++) {
-                if(this.listaClientes[i]!=null && this.listaClientes[i].getCedula().equalsIgnoreCase(texto)){
-                        this.input_nombres_cliente.setText( this.listaClientes[i].getNombres() );
-                        this.input_direccion_cliente.setText( this.listaClientes[i].getDireccion() );
-                        encontrado = true;
-                        break;
-                }
+            if(this.listaClientes[i]!=null && this.listaClientes[i].getCedula().equalsIgnoreCase(texto)){
+                this.input_nombres_cliente.setText( this.listaClientes[i].getNombres() );
+                this.input_direccion_cliente.setText( this.listaClientes[i].getDireccion() );
+                encontrado = true;
+                this.guardarCliente = this.listaClientes[i].getNombres();
+                this.documentoCliente = this.listaClientes[i].getCedula();
+                break;
+            }
         }
 
         if(encontrado){
-                deshabilitarInput(this.input_nombres_cliente);
-                deshabilitarInput(this.input_direccion_cliente);
-                this.input_cedula_vendedor.requestFocus();
+            deshabilitarInput(this.input_nombres_cliente);
+            deshabilitarInput(this.input_direccion_cliente);
+            this.input_cedula_vendedor.requestFocus();
         }else{
-            /*if (this.validarNumero(texto)) {          
-                habilitarInput(this.input_nombres_cliente);
-                habilitarInput(this.input_direccion_cliente);
-                this.input_nombres_cliente.requestFocus();
-            }*/
+            Alert alerta = new Alert ("404", "El usuario no se encuentra registrado.", "error");
         }	
     }
 
@@ -565,6 +632,8 @@ public class CrearFactura extends JFrame{
             if(this.listaVendedores[i]!=null && this.listaVendedores[i].getCedula().equalsIgnoreCase(texto)){
                 this.input_nombres_vendedor.setText( this.listaVendedores[i].getNombres() );
                 encontrado = true;
+                this.guardarVendedor = this.listaVendedores[i].getNombres();
+                this.documentoVendedor = this.listaVendedores[i].getCedula();
                 break;
             }
         }
@@ -579,15 +648,24 @@ public class CrearFactura extends JFrame{
 
             this.input_nombres_vendedor.setText("");
             this.input_cedula_vendedor.requestFocus();
+            Alert alerta = new Alert ("404", "El usuario no se encuentra registrado.", "error");
         }else{
-            this.input_id_producto.setText("");
-            habilitarInput(this.input_id_producto);
-            this.input_nombre_producto.setText("");
-            deshabilitarInput(this.input_nombre_producto);
-            this.input_cant_producto.setText("");
-            habilitarInput(this.input_cant_producto);
+            if (this.guardarCliente != "") {
+                this.input_id_producto.setText("");
+                habilitarInput(this.input_id_producto);
+                this.input_nombre_producto.setText("");
+                deshabilitarInput(this.input_nombre_producto);
+                this.input_cant_producto.setText("");
+                habilitarInput(this.input_cant_producto);
 
-            this.input_id_producto.requestFocus();
+                this.input_id_producto.requestFocus();
+            }else{
+                habilitarInput(this.input_id_producto);
+                deshabilitarInput(this.input_nombre_producto);
+                habilitarInput(this.input_cant_producto);
+                this.input_cedula_cliente.requestFocus();
+                Alert alerta = new Alert ("606", "Los datos del cliente no estan llenos.", "error");
+            }
         }
     }
 
@@ -599,6 +677,8 @@ public class CrearFactura extends JFrame{
                 if(this.listaProductos[i]!=null && this.listaProductos[i].getId()==Integer.valueOf(texto) ){
                     this.input_nombre_producto.setText( this.listaProductos[i].getNombre() );
                     encontrado = true;
+                    this.guardarProducto = this.listaProductos[i].getNombre();
+                    this.guardarPrecio = this.listaProductos[i].getPrecio();
                     break;
                 }
             }
@@ -609,6 +689,7 @@ public class CrearFactura extends JFrame{
             deshabilitarInput(this.input_nombre_producto);
             this.input_cant_producto.setText("");
             this.input_id_producto.requestFocus();
+            Alert alerta = new Alert ("404", "El producto no se encuentra registrado.", "error");
         }else{
             this.input_cant_producto.setText("");
             habilitarInput(this.input_cant_producto);
@@ -628,7 +709,6 @@ public class CrearFactura extends JFrame{
         input.setEnabled(true);
     }
     
-    
     // Atributos
     private Persona listaClientes [];
     private Persona listaVendedores [];
@@ -645,7 +725,7 @@ public class CrearFactura extends JFrame{
     private JLabel etq_nombre_producto;
     private JLabel etq_cant_producto;
     private JLabel etq_btn_producto;
-    private JLabel etq_resultado;
+    private JPanel etq_resultado;
     private JLabel etq_total;
     private JTextField input_cedula_cliente;
     private JTextField input_nombres_cliente;
@@ -658,5 +738,19 @@ public class CrearFactura extends JFrame{
     private JButton btn_buscar_cliente;
     private JButton btn_buscar_vendedor;
     private JButton btn_add_producto;
+    private String guardarCliente;
+    private String guardarVendedor;
+    private String guardarProducto;
+    private String documentoCliente;
+    private String documentoVendedor;
+    private JScrollPane scroll;
+    private int i;
+    private int j;
+    private int guardarPrecio;
+    private int precioTotal;
+    private int id;
+    private int id_items;
+    GridBagConstraints restriccion = new GridBagConstraints();
+    JPanel contPrincipal = new JPanel();
     Menu ventanaMenu;
 }

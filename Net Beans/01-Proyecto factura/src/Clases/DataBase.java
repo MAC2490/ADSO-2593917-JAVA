@@ -1,5 +1,6 @@
 package Clases;
 
+import Principal.Alert;
 import java.sql.*;
 
 public class DataBase {
@@ -252,4 +253,33 @@ public class DataBase {
         return respuesta;
     }
     
+    public boolean registrarFactura(int id,String cedulaCliente,String cedulaVendero, String fecha, int total){
+        boolean respuesta = false;
+        try {
+            String consulta = "INSERT INTO facturas (id,cedula_cliente,cedula_vendedor,fecha,total) VALUES ('"+id+"','"+cedulaCliente+"','"+cedulaVendero+"','"+fecha+"','"+total+"')";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if (resp_consulta==1) {
+                respuesta = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("--> Error Delete: " + e.getMessage());
+        }
+        return respuesta;
+    }
+    
+    public boolean registrarItemsFactura (int id,int id_factura, int id_producto, int id_cantidad, int subtotal){
+        boolean respuesta = false;
+        try {
+            String consulta = "INSERT INTO items_factura (id,id_factura,id_producto,cantidad,subtotal) VALUES ('"+id+"','"+id_factura+"','"+id_producto+"','"+id_cantidad+"','"+subtotal+"')";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if (resp_consulta==1) {
+                respuesta = true;
+            }
+            Alert alerta = new Alert("EXITO", "Datos registrados correctamente", "success");
+        } catch (SQLException e) {
+            //Alert alerta = new Alert("902", "Los datos no se pudieron registrar.", "error");
+            System.out.println("--> Error Delete: " + e.getMessage());
+        }
+        return respuesta;
+    }
 }
