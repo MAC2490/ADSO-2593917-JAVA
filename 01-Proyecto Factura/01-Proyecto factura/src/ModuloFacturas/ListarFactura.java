@@ -49,7 +49,7 @@ public class ListarFactura extends javax.swing.JFrame {
         contentLista = new javax.swing.JPanel();
         btnSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         contentTitle.setBackground(new java.awt.Color(51, 51, 255));
 

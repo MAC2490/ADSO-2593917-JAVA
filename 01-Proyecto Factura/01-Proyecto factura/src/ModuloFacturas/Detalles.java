@@ -51,7 +51,7 @@ public class Detalles extends javax.swing.JFrame {
         etq_total = new javax.swing.JLabel();
         input_total = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
