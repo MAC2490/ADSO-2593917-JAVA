@@ -29,7 +29,7 @@ public class EliminarProducto extends javax.swing.JFrame {
         etqPrecio = new javax.swing.JLabel();
         campo_nombre = new javax.swing.JTextField();
         campo_precio = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -78,13 +78,13 @@ public class EliminarProducto extends javax.swing.JFrame {
         campo_precio.setEditable(false);
         campo_precio.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jButton3.setBackground(new java.awt.Color(0, 0, 102));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("CANCELAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_cancelar.setBackground(new java.awt.Color(0, 0, 102));
+        btn_cancelar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btn_cancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_cancelar.setText("CANCELAR");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_cancelarActionPerformed(evt);
             }
         });
 
@@ -132,7 +132,7 @@ public class EliminarProducto extends javax.swing.JFrame {
                             .addComponent(campo_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jButton3)
+                        .addComponent(btn_cancelar)
                         .addGap(29, 29, 29)
                         .addComponent(btnModificar)))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -166,7 +166,7 @@ public class EliminarProducto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnModificar)
-                            .addComponent(jButton3))
+                            .addComponent(btn_cancelar))
                         .addGap(15, 15, 15))))
         );
 
@@ -243,40 +243,16 @@ public class EliminarProducto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
        this.ventanaMenu.setVisible(true);
        dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btn_cancelarActionPerformed
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EliminarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EliminarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EliminarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EliminarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btn_cancelar;
     private javax.swing.JTextField buscar_codigo;
     private javax.swing.JTextField campo_nombre;
     private javax.swing.JTextField campo_precio;
@@ -285,7 +261,6 @@ public class EliminarProducto extends javax.swing.JFrame {
     private javax.swing.JLabel etqPrecio;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

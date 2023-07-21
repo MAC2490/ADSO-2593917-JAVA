@@ -2,6 +2,7 @@ package ModuloFacturas;
 
 import Clases.Persona;
 import Clases.Producto;
+import Clases.ItemFactura;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,6 +21,7 @@ public class CrearFactura extends JFrame{
         this.listaClientes = this.ventanaMenu.database.listaClientes();
         this.listaVendedores = this.ventanaMenu.database.listaVendedores();
         this.listaProductos = this.ventanaMenu.database.listaProducto();
+        this.listaFactura = new ItemFactura[100];
         
         this.guardarCliente = "";
         this.guardarProducto = "";
@@ -30,8 +32,6 @@ public class CrearFactura extends JFrame{
         this.j = 0;
         this.guardarPrecio = 0;
         this.precioTotal = 0;
-        this.id = 0;
-        this.id_items = 0;
         initComponent();
     }
 
@@ -352,7 +352,6 @@ public class CrearFactura extends JFrame{
         restriccion.insets = new Insets(0, 0, 0, 10);
         contPrincipal.add( etq_total, restriccion );
         
-        
         JButton btn_atras = new JButton("ATRAS");
         restriccion.gridy = 12;
         restriccion.gridx = 2;
@@ -493,9 +492,9 @@ public class CrearFactura extends JFrame{
         ActionListener eventoClickAgregarProducto = new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 System.out.println("02");
-                agregarProducto();
                 total();
                 registrarItemsFactura();
+                agregarProducto();
             }
         };
         btn_add_producto.addActionListener(eventoClickAgregarProducto);
@@ -519,27 +518,50 @@ public class CrearFactura extends JFrame{
     }
     
     public void Registrar(){
-        this.id++; 
+        boolean mostrarAlerta = false;
+        this.ventanaMenu.id++;
         LocalDate fechaActual = LocalDate.now();
         String fecha = fechaActual.toString();
-        if (!this.documentoCliente.equals(" ") && !this.documentoVendedor.equals("") && !fecha.equals("") && this.precioTotal != 0 && this.id_items >=0) {
-            boolean proceso = this.ventanaMenu.database.registrarFactura(this.id, this.documentoCliente, this.documentoVendedor, fecha, this.precioTotal);
-            Alert alerta = new Alert("EXITO", "Los datos se guardaron correctamento", "success");
-            System.out.println(this.documentoCliente+"  "+this.documentoVendedor+"  "+fecha+"  "+this.precioTotal);
+        
+        if (!this.documentoCliente.equals(" ") && !this.documentoVendedor.equals("") && !fecha.equals("") && this.precioTotal != 0 && this.ventanaMenu.id_items >=0) {
+            boolean proceso = this.ventanaMenu.database.registrarFactura(this.ventanaMenu.id, this.documentoCliente, this.documentoVendedor, fecha, this.precioTotal);
+            for (int i = 1; i <= this.ventanaMenu.id_items; i++) {
+                System.out.println("- "+this.listaFactura[i]);
+                if (this.listaFactura[i] != null) {
+                    System.out.println("id  "+this.ventanaMenu.id_items);
+                    String nombre = this.listaFactura[i].getNombre();
+                    int id_factura = this.listaFactura[i].getId();
+                    int id_producto = this.listaFactura[i].getId_producto();
+                    int cantidad = this.listaFactura[i].getCantidad();
+                    int subtotal = this.listaFactura[i].getSubtotal();
+                    boolean ProcesoItemFactura = this.ventanaMenu.database.registrarItemsFactura(nombre,id_factura,this.ventanaMenu.id,id_producto,cantidad,subtotal);
+                    mostrarAlerta = true;
+                }
+            }
+            
+            if (mostrarAlerta) {
+                Alert alerta = new Alert("EXITO", "La factura se guardo con exito :)", "success");
+            }
         }else{
-            Alert alerta = new Alert("902", "Los datos no se pudieron registrar.", "error");
+            Alert alerta = new Alert("902", "La factura no se pudo registrar correctamente :(", "error");
         }
     }
     
     public void registrarItemsFactura(){
-        this.id_items++;
         String id_producto = input_id_producto.getText();
         String cantidad_pro = input_cant_producto.getText();
+        String nombre = input_nombre_producto.getText();
         int idProducto = Integer.valueOf(id_producto);
         int cantidad = Integer.valueOf(cantidad_pro);
+        this.guardarPrecio = this.listaProductos[i].getPrecio();
+        int subtotal = this.guardarPrecio*cantidad;
         if (cantidad != 0 && this.precioTotal != 0) {
-            boolean proceso = this.ventanaMenu.database.registrarItemsFactura(this.id_items,this.id,idProducto,cantidad,this.precioTotal);
+            this.ventanaMenu.id_items++;
+            ItemFactura temp = new ItemFactura(nombre,this.ventanaMenu.id_items,cantidad, idProducto, cantidad, subtotal);
+            this.listaFactura[this.ventanaMenu.id_items] = temp;
+            System.out.println("id factura "+this.ventanaMenu.id_items);
         }
+        System.out.println(this.ventanaMenu.id);
     }
     
     public void agregarProducto(){
@@ -569,6 +591,9 @@ public class CrearFactura extends JFrame{
         }
         this.scroll.revalidate();
         j=1;
+        this.input_id_producto.setText("");
+        this.input_cant_producto.setText("");
+        this.input_id_producto.requestFocus();
     }
     
     public void total(){
@@ -748,8 +773,7 @@ public class CrearFactura extends JFrame{
     private int j;
     private int guardarPrecio;
     private int precioTotal;
-    private int id;
-    private int id_items;
+    private ItemFactura listaFactura [];
     GridBagConstraints restriccion = new GridBagConstraints();
     JPanel contPrincipal = new JPanel();
     Menu ventanaMenu;

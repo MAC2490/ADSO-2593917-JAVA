@@ -84,6 +84,46 @@ public class DataBase {
             return listaProducto;
         }
     }
+    public Factura [] listaFacturas(){
+        Factura [] listaFacturas = new Factura [100];
+        try{
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM facturas");
+            registros.next();
+            if(registros.getRow()==1){
+                int indice = 0;
+                do{
+                   Factura temp = new Factura(registros.getInt("id"), registros.getInt("cedula_cliente"), registros.getInt("cedula_vendedor"), registros.getString("fecha"), registros.getInt("total") );
+                   listaFacturas[indice] = temp;
+                   indice++;
+                }while(registros.next());
+            }
+            return listaFacturas;
+        }catch(SQLException e){
+            System.out.println("Error en SELECT: "+e.getMessage());
+            return listaFacturas;
+        }
+    }
+    public ItemFactura [] listaItems(){
+        ItemFactura [] listaItems = new ItemFactura [100];
+        try{
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM items_factura");
+            registros.next();
+            if(registros.getRow()==1){
+                int indice = 0;
+                do{
+                   ItemFactura temp = new ItemFactura(registros.getString("nombre"),registros.getInt("id"),registros.getInt("id_factura"),registros.getInt("id_producto"),registros.getInt("cantidad"),registros.getInt("subtotal"));
+                   listaItems[indice] = temp;
+                   indice++;
+                }while(registros.next());
+            }
+            return listaItems;
+        }catch(SQLException e){
+            System.out.println("Error en SELECT: "+e.getMessage());
+            return listaItems;
+        }
+            
+        
+    }
     
     public Persona buscarCliente(String cedula){
         Persona temp = null;
@@ -178,7 +218,6 @@ public class DataBase {
         String nombre = producto.getNombre();
         int precio = producto.getPrecio();
         
-        
         try {
             String consulta = "UPDATE productos SET nombre='"+nombre+"',precio='"+precio+"' WHERE id='"+id+"' ";
             int resp = manipularDB.executeUpdate(consulta);
@@ -252,6 +291,41 @@ public class DataBase {
         }
         return respuesta;
     }
+    public void eliminarCliente(String cedula){
+        boolean respuesta = false;
+        try{
+            String consulta = "DELETE FROM clientes WHERE cedula='"+cedula+"'";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if(resp_consulta==1){
+                respuesta=true;
+            }
+        }catch(SQLException ex) {
+            System.out.println("--> Error Delete: " + ex.getMessage());
+        }
+        if(respuesta){
+            System.out.println("CLIENTE ELIMINADO CON EXITO");
+        }else{
+            System.out.println("ERROR AL ELIMINAR");
+        }
+    }
+
+    public void eliminarVendedor(String cedula) {
+        boolean respuesta = false;
+        try{
+            String consulta = "DELETE FROM vendedores WHERE cedula='"+cedula+"'";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if(resp_consulta==1){
+                respuesta=true;
+            }
+        }catch(SQLException ex) {
+            System.out.println("--> Error Delete: " + ex.getMessage());
+        }
+        if(respuesta){
+            System.out.println("CLIENTE ELIMINADO CON EXITO");
+        }else{
+            System.out.println("ERROR AL ELIMINAR");
+        }
+    }
     
     public boolean registrarFactura(int id,String cedulaCliente,String cedulaVendero, String fecha, int total){
         boolean respuesta = false;
@@ -267,19 +341,37 @@ public class DataBase {
         return respuesta;
     }
     
-    public boolean registrarItemsFactura (int id,int id_factura, int id_producto, int id_cantidad, int subtotal){
+    public boolean registrarItemsFactura (String nombre,int id,int id_factura, int id_producto, int id_cantidad, int subtotal){
         boolean respuesta = false;
         try {
-            String consulta = "INSERT INTO items_factura (id,id_factura,id_producto,cantidad,subtotal) VALUES ('"+id+"','"+id_factura+"','"+id_producto+"','"+id_cantidad+"','"+subtotal+"')";
+            String consulta = "INSERT INTO items_factura (nombre,id,id_factura,id_producto,cantidad,subtotal) VALUES ('"+nombre+"','"+id+"','"+id_factura+"','"+id_producto+"','"+id_cantidad+"','"+subtotal+"')";
             int resp_consulta = manipularDB.executeUpdate(consulta);
             if (resp_consulta==1) {
                 respuesta = true;
             }
-            Alert alerta = new Alert("EXITO", "Datos registrados correctamente", "success");
         } catch (SQLException e) {
             //Alert alerta = new Alert("902", "Los datos no se pudieron registrar.", "error");
             System.out.println("--> Error Delete: " + e.getMessage());
         }
         return respuesta;
+    }
+    public Factura [] buscarFactura(){
+        Factura [] listaFactura = new Factura[100] ;
+        try{
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM facturas");
+            registros.next();
+            if (registros.getRow()==1){
+                int indice = 0;
+                do{
+                   Factura temp = new Factura(registros.getInt("id"), registros.getInt("cedula_cliente"), registros.getInt("cedula_vendedor"), registros.getString("fecha"), registros.getInt("total"));
+                   listaFactura[indice] = temp;
+                   indice++;
+                }while(registros.next());
+            }
+            return listaFactura;
+        }catch (SQLException e){
+            System.out.println("Error en SELECT: "+e.getMessage());
+            return listaFactura;
+        }
     }
 }
